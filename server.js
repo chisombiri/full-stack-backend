@@ -60,7 +60,7 @@ app.post("/signin", (req, res) => {
     req.body.email === database.users[1].email &&
     req.body.password === database.users[1].password
   ) {
-    res.json("success");
+    res.json(database.users[1]);
   } else {
     res.status(400).json("error 400 bad request signing in");
   }
@@ -77,7 +77,6 @@ app.post("/register", (req, res) => {
     id: "15",
     name: name,
     email: email,
-    password: password,
     entries: 0,
     joined: new Date(),
   });
