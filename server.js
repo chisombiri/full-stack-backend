@@ -1,6 +1,20 @@
 const express = require("express");
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
+const knex = require('knex');
+const { response } = require("express");
+
+const db = knex({
+  client: 'pg',
+  connection: {
+    host : '127.0.0.1',
+    user : 'postgres',
+    password : 'postgres',
+    database : 'full-stack'
+  }
+});
+
+db.select('*').from('users').then(console.log)
 
 const app = express();
 
@@ -73,14 +87,14 @@ app.post("/register", (req, res) => {
   //   console.log(hash);
   // });
 
-  database.users.push({
-    id: "15",
-    name: name,
+  db('users').returning('*').insert({
     email: email,
-    entries: 0,
-    joined: new Date(),
-  });
-  res.json(database.users[database.users.length - 1]);
+    name: name,
+    joined: new Date()
+  }).then(users => {
+    res.json(users[0]);
+  })
+ 
 });
 
 //profile route
